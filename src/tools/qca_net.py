@@ -159,14 +159,15 @@ def main():
             seg_img = test_nsn.NuclearSegmentation(image_path)
 
             ### Detection Phase ###
-            det_img = test_ndn.NuclearDetection(image_path)
+#            det_img = test_ndn.NuclearDetection(image_path)
 
             ### Post-Processing ###
-            if det_img.sum() > 0:
-                distance = ndimage.distance_transform_edt(seg_img)
-                wsimage = watershed(-distance, det_img, mask=seg_img)
-            else:
-                wsimage = morphology.label(seg_img, neighbors=4)
+
+#            if det_img.sum() > 0:
+#                distance = ndimage.distance_transform_edt(seg_img)
+#                wsimage = watershed(-distance, det_img, mask=seg_img)
+#            else:
+            wsimage = morphology.label(seg_img, neighbors=4)
             labels = np.unique(wsimage)
             wsimage = np.searchsorted(labels, wsimage)
             filename = os.path.join(opbase, wsbase, os.path.basename(image_path)[:os.path.basename(image_path).rfind('.')] + '.tif')
